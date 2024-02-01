@@ -12,7 +12,7 @@
       </form>
 
       <div v-for="todo in todos" :key="todo.title" class="todo-item" :class="{ selected: todo.selected }">
-        <input type="checkbox" v-model="todo.selected">
+        <input type="checkbox" v-model="todo.selected" class="checkbox">
         <TodoItem :title="todo.title" :done="todo.done"/>
       </div>
     </div>
@@ -88,6 +88,7 @@ function resetForm(): void {
   display: flex;
   align-items: center;
   column-gap: 1em;
+  padding: 0 .2em;
 }
 
 form.todo-item {
@@ -103,5 +104,9 @@ form.todo-item {
   font-size: 1.2rem;
   width: 100%;
   background-color: var(--color-background-soft);
+}
+
+input.checkbox {
+  transform: scale(1.4);
 }
 </style>
