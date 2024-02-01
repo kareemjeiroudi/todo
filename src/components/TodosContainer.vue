@@ -7,13 +7,17 @@
 
     <div id="todos-container">
       <form v-if="showAddForm" class="todo-item" @submit="addNewTodo" @submit.prevent>
-        <input id="new-todo-input" type="text" v-model="newTodoTitle" placeholder="Finish task RKU-314" class="green">
+        <input id="new-todo-input" type="text" v-model="newTodoTitle" :placeholder="placeholderStore.placeholder" class="green">
         <input type="submit" hidden />
       </form>
 
-      <div v-for="todo in todos" :key="todo.title" class="todo-item" :class="{ selected: todo.selected }">
+      <div v-for="todo in todoStore.todos" :key="todo.title" class="todo-item" :class="{ selected: todo.selected }">
         <input type="checkbox" v-model="todo.selected" class="checkbox">
         <TodoItem :title="todo.title" :done="todo.done"/>
+      </div>
+
+      <div v-if="!todoStore.todos.length" class="green">
+        <h2>{{ jokesStore.joke }}</h2>
       </div>
     </div>
   </form>
@@ -23,42 +27,34 @@
 
 import TodoItem from "@/components/TodoItem.vue";
 import { ref } from "vue";
+import type { Todo } from "@/stores/todos";
+import { todoStore as tStore } from "@/stores/todos";
+import { placeholderStore as pStore } from "@/stores/placeholders";
+import { jokesStore as jStore } from "@/stores/jokes";
 
-type Todo = {
-  id: number,
-  title: string,
-  selected: boolean,
-  done: boolean
-}
-
-const todos =  ref([
-  { id: 1, title: "Todo item 01", selected: false, done: false},
-  { id: 2, title: "Todo item 02", selected: false, done: false},
-  { id: 3, title: "Todo item 03", selected: false, done: false},
-  { id: 4, title: "Todo item 04", selected: true, done: false},
-  { id: 5, title: "Todo item 05", selected: false, done: false},
-])
-
-let newTodoTitle = '';
+const todoStore = tStore();
+const placeholderStore = pStore();
+const jokesStore = jStore();
+const newTodoTitle = ref('');
 const showAddForm = ref(false);
 
 function deleteSelected(): void {
-  todos.value = todos.value.filter(todo => !todo.selected);
+  const todoIds = todoStore.todos.filter(todo => todo.selected).map(todo => todo.id);
+  todoStore.delete(todoIds);
 }
 
 function addNewTodo(): void {
-  if (!newTodoTitle.length) {
+  if (!newTodoTitle.value.length) {
     return;
   }
-
-  const newTodo: Todo = {id: todos.value.length, title: newTodoTitle, selected: false, done: false };
-  todos.value = [newTodo, ...todos.value];
+  const newTodo: Todo = { id: todoStore.todos.length, title: newTodoTitle.value, selected: false, done: false };
+  todoStore.create(newTodo);
   resetForm();
 }
 
 function resetForm(): void {
   showAddForm.value = false;
-  newTodoTitle = '';
+  newTodoTitle.value = '';
 }
 </script>
 
@@ -70,7 +66,7 @@ function resetForm(): void {
   border: none;
   padding: .4em .8em;
   font-size: 18pt;
-  border-radius: 10%;
+  border-radius: .4em;
 }
 
 #actions {
