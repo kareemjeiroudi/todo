@@ -4,7 +4,10 @@
     <button class="action-button">-</button>
   </div>
   <div id="todos-container">
-    <TodoItem v-for="todo in todos" :key="todo.title" class="todo-item" :title="todo.title" />
+    <div v-for="todo in todos" :key="todo.title" class="todo-item" :class="{ selected: todo.selected }">
+      <input type="checkbox" :value="todo.selected" @change="todo.selected = !todo.selected">
+      <TodoItem :title="todo.title" :done="todo.done"/>
+    </div>
   </div>
 </template>
 
@@ -14,9 +17,9 @@ import TodoItem from "@/components/TodoItem.vue";
 import { ref } from "vue";
 
 const todos =  ref([
-  { title: "Todo item 01"},
-  { title: "Todo item 02"},
-  { title: "Todo item 03"},
+  { id: 1, title: "Todo item 01", selected: false, done: false},
+  { id: 2, title: "Todo item 02", selected: false, done: false},
+  { id: 3, title: "Todo item 03", selected: false, done: false},
 ])
 </script>
 
@@ -24,7 +27,7 @@ const todos =  ref([
 
 .action-button {
   margin-left: 1em;
-  background: antiquewhite;
+  background-color: var(--color-text-accent);
   border: none;
   padding: .4em .8em;
   font-size: 18pt;
@@ -43,6 +46,12 @@ const todos =  ref([
 
 .todo-item {
   border-top: grey solid 0.02em;
+  display: flex;
+  align-items: center;
+  column-gap: 1em;
 }
 
+.todo-item.selected {
+  background-color: var(--color-text-accent);
+}
 </style>

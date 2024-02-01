@@ -1,11 +1,17 @@
 <script setup lang="ts">
-defineProps<{
-  title: string
-}>()
+import { ref } from "vue";
+
+const props = defineProps<{
+  title: string,
+  done: boolean
+}>();
+
+const isDone = ref(props.done);
+
 </script>
 
 <template>
-    <h3 class="green">{{ title }}</h3>
+  <h3 class="green">{{ title }}</h3>
 </template>
 
 <style scoped>
@@ -31,4 +37,5 @@ h3 {
     text-align: left;
   }
 }
+
 </style>
