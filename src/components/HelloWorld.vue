@@ -8,10 +8,14 @@ defineProps<{
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
     <h3>
-      You’ve successfully created a project with
-      <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>. What's next?
+      Welcome to Matata your all favorite todo application. Halt dich fest.
     </h3>
+    <h3>What's next?</h3>
+      <iframe id="hakuna-matata-tv" width="400" height="250" src="https://www.youtube.com/embed/kaOIxll4LCA?si=wIgMRdg__xoVwGsZ"
+              title="Hakuna Matata"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+      ></iframe>
   </div>
 </template>
 
@@ -38,4 +42,12 @@ h3 {
     text-align: left;
   }
 }
+
+#hakuna-matata-tv {
+  margin: 2em;
+  box-shadow: 0 0 1em .1em var(--color-text-accent);
+  border: none;
+  border-radius: .4em;
+}
+
 </style>
